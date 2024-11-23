@@ -1,70 +1,122 @@
-# Getting Started with Create React App
+# Faction Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
+The **Faction Dashboard** is a React-based UI component designed to manage a faction's operations. This component includes modals and forms for tasks such as setting a leader, inviting players, managing duty statuses, promoting/demoting members, editing salaries, and more. The dashboard leverages `lucide-react` icons, Tailwind CSS for styling, and React state management for modal and form handling.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Features
+- **Set Leader**: Assign a member as the faction leader.
+- **Invite Player**: Add a new player to the faction.
+- **Set Faction Logo**: Update the faction logo via a URL.
+- **Manage Duty Status**: Set duty statuses for faction members.
+- **Promote/Demote Member**: Adjust ranks of faction members.
+- **Edit Salary & Ranks**: Update salaries for members.
+- **Responsive Design**: Built using Tailwind CSS, the dashboard adapts to different screen sizes.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Project Structure
+```plaintext
+FactionDashboard/
+├── Modal.jsx                # Handles the modal structure and display
+├── SetLeaderForm.jsx        # Form to assign a leader
+├── InvitePlayerForm.jsx     # Form to invite new players
+├── SetLogoForm.jsx          # Form to update faction logo
+├── ManageDutyForm.jsx       # Form to manage duty status
+├── PromoteDemoteForm.jsx    # Form to promote/demote members
+├── EditSalaryForm.jsx       # Form to edit salaries
+└── FactionDashboard.jsx     # Main component rendering the dashboard
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. **Clone the repository**:
+   ```bash
+   git clone <repository-url>
+   cd FactionDashboard
+   ```
 
-### `npm run build`
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. **Run the project**:
+   ```bash
+   npm start
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Usage
 
-### `npm run eject`
+### 1. **Setting a Leader**
+- Navigate to "Set Leader".
+- Select a member from the dropdown.
+- Submit the form to update the faction leader.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 2. **Inviting a Player**
+- Click on "Invite Player".
+- Enter the player's name.
+- Submit the form to send the invitation.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 3. **Updating the Faction Logo**
+- Access the "Set Logo" form.
+- Enter the logo's URL.
+- Submit to update the faction's visual identity.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 4. **Managing Duty Status**
+- Use the "Manage Duty" form.
+- Select a member and toggle their duty status.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 5. **Promoting or Demoting Members**
+- Open the "Promote/Demote" modal.
+- Select a member, choose an action (promote or demote), and specify the new rank.
 
-## Learn More
+### 6. **Editing Salaries**
+- Use the "Edit Salary" form.
+- Select a member and specify their new salary.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Dependencies
+- **React**: Component-based UI library.
+- **lucide-react**: Icon library for React components.
+- **Tailwind CSS**: Utility-first CSS framework.
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Customization
+### Modify Styling
+Update Tailwind CSS classes in the component files to adjust styles.
 
-### Analyzing the Bundle Size
+### Add New Features
+Extend the modal and form components to include additional functionalities as required.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## Contributing
+1. Fork the repository.
+2. Create a new branch for your feature:
+   ```bash
+   git checkout -b feature-name
+   ```
+3. Commit your changes:
+   ```bash
+   git commit -m "Add new feature"
+   ```
+4. Push to your fork:
+   ```bash
+   git push origin feature-name
+   ```
+5. Create a pull request.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## License
+This project is licensed under the [MIT License](LICENSE).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+For any questions or issues, feel free to open a GitHub issue.
