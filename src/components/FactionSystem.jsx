@@ -1,53 +1,12 @@
 import React, { useState } from 'react';
-import { Shield, Users, DollarSign, Settings, LogOut, ChevronUp, ChevronDown } from 'lucide-react';
+import { Shield, Users, DollarSign, Settings, LogOut, ChevronUp, ChevronDown, X } from 'lucide-react';
+import police_logo from './../assets/los-loice.jpeg'
+import { Card,CardHeader,CardContent } from './ui/card/Card';
+import Button from './ui/Button';
+import MemberRow from './app/MemberRow';
+import {EditSalaryForm,InvitePlayerForm,ManageDutyForm,PromoteDemoteForm,SetLeaderForm,SetLogoForm} from './ui/forms/forms'
+import Modal from './ui/modal/Modal';
 
-// Custom Card Components
-const Card = ({ children, className = '' }) => (
-  <div className={`bg-gray-800 rounded-lg shadow-lg ${className}`}>
-    {children}
-  </div>
-);
-
-const CardHeader = ({ children, className = '' }) => (
-  <div className={`p-4 border-b border-gray-700 ${className}`}>
-    {children}
-  </div>
-);
-
-const CardContent = ({ children, className = '' }) => (
-  <div className={`p-4 ${className}`}>
-    {children}
-  </div>
-);
-
-// Custom Button Component
-const Button = ({ children, className = '', onClick }) => (
-  <button
-    onClick={onClick}
-    className={`px-4 py-2 rounded-md transition-colors ${className}`}
-  >
-    {children}
-  </button>
-);
-
-// Member Row Component
-const MemberRow = ({ member }) => (
-  <tr className="border-b border-gray-700">
-    <td className="py-2 px-4">{member.name}</td>
-    <td className="py-2 px-4">{member.rank}</td>
-    <td className="py-2 px-4">
-      <span className={`px-2 py-1 rounded ${member.status === 'Online' ? 'bg-green-600' : 'bg-red-600'}`}>
-        {member.status}
-      </span>
-    </td>
-    <td className="py-2 px-4">{member.lastSeen}</td>
-    <td className="py-2 px-4">{member.leader ? 'Yes' : 'No'}</td>
-    <td className="py-2 px-4">${member.salary}</td>
-    <td className="py-2 px-4">{member.duty ? 'On Duty' : 'Off Duty'}</td>
-  </tr>
-);
-
-// Action Button Component
 const ActionButton = ({ icon: Icon, label, onClick }) => (
   <Button 
     onClick={onClick}
@@ -60,20 +19,58 @@ const ActionButton = ({ icon: Icon, label, onClick }) => (
 
 // Main Component
 const FactionDashboard = () => {
-  const [members] = useState([
-    {
-      name: "Xan Jing",
-      rank: "Chief of Police",
-      status: "Online",
-      lastSeen: "Today",
-      leader: false,
-      salary: 2000,
-      duty: false
-    }
-  ]);
+    const [activeModal, setActiveModal] = useState(null);
+  
+    const [members] = useState([
+      {
+        name: "Xan Jing",
+        rank: "Chief of Police",
+        status: "Online",
+        lastSeen: "Today",
+        leader: false,
+        salary: 2000,
+        duty: false
+      }
+    ]);
+  
+    // Modal handlers
+    const closeModal = () => setActiveModal(null);
+    
+    // Get modal content based on active modal
+    const getModalContent = () => {
+      switch (activeModal) {
+        case 'setLeader':
+          return <SetLeaderForm onClose={closeModal} members={members} />;
+        case 'invite':
+          return <InvitePlayerForm onClose={closeModal} />;
+        case 'setLogo':
+          return <SetLogoForm onClose={closeModal} />;
+        case 'manageDuty':
+          return <ManageDutyForm onClose={closeModal} members={members} />;
+        case 'promoteDemote':
+          return <PromoteDemoteForm onClose={closeModal} members={members} />;
+        case 'editSalary':
+          return <EditSalaryForm onClose={closeModal} members={members} />;
+        default:
+          return null;
+      }
+    };
+  
+    // Get modal title based on active modal
+    const getModalTitle = () => {
+      switch (activeModal) {
+        case 'setLeader': return 'Set Leader';
+        case 'invite': return 'Invite Player';
+        case 'setLogo': return 'Set Faction Logo';
+        case 'manageDuty': return 'Manage Duty Status';
+        case 'promoteDemote': return 'Promote/Demote Member';
+        case 'editSalary': return 'Edit Salary';
+        default: return '';
+      }
+    };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-4">
+    <div className="min-h-screen text-white p-4">
       <Card>
         <CardHeader>
           <div className="flex justify-between items-center">
@@ -84,7 +81,7 @@ const FactionDashboard = () => {
             <div className="flex items-center gap-2">
               <span className="text-sm text-gray-400">Members: {members.length}</span>
               <img 
-                src="/api/placeholder/64/64"
+                src={police_logo}
                 alt="Faction Logo"
                 className="h-12 w-12 rounded-full"
               />
@@ -120,17 +117,49 @@ const FactionDashboard = () => {
 
             {/* Action Sidebar */}
             <div className="space-y-2">
-              <ActionButton icon={Users} label="Set Leader" />
-              <ActionButton icon={Users} label="Invite Player" />
-              <ActionButton icon={Shield} label="Set Logo" />
-              <ActionButton icon={Settings} label="Manage Duty" />
-              <ActionButton icon={ChevronUp} label="Promote/Demote" />
-              <ActionButton icon={DollarSign} label="Edit Salary & Ranks" />
-              <ActionButton icon={LogOut} label="Close" />
+              <ActionButton 
+                icon={Users} 
+                label="Set Leader" 
+                onClick={() => setActiveModal('setLeader')}
+              />
+              <ActionButton 
+                icon={Users} 
+                label="Invite Player" 
+                onClick={() => setActiveModal('invite')}
+              />
+              <ActionButton 
+                icon={Shield} 
+                label="Set Logo" 
+                onClick={() => setActiveModal('setLogo')}
+              />
+              <ActionButton 
+                icon={Settings} 
+                label="Manage Duty" 
+                onClick={() => setActiveModal('manageDuty')}
+              />
+              <ActionButton 
+                icon={ChevronUp} 
+                label="Promote/Demote" 
+                onClick={() => setActiveModal('promoteDemote')}
+              />
+              <ActionButton 
+                icon={DollarSign} 
+                label="Edit Salary & Ranks" 
+                onClick={() => setActiveModal('editSalary')}
+              />
+              <ActionButton icon={LogOut} label="Close" onClick={closeModal} />
             </div>
           </div>
         </CardContent>
       </Card>
+       {/* Modal */}
+       <Modal
+        isOpen={!!activeModal}
+        onClose={closeModal}
+        title={getModalTitle()}
+      >
+        {getModalContent()}
+      </Modal>
     </div>
   );
 };
