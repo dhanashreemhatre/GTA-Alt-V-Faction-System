@@ -6,6 +6,7 @@ import Button from './ui/Button';
 import MemberRow from './app/MemberRow';
 import {EditSalaryForm,InvitePlayerForm,ManageDutyForm,PromoteDemoteForm,SetLeaderForm,SetLogoForm} from './ui/forms/forms'
 import Modal from './ui/modal/Modal';
+import InitialSetupModal from './InitialSetupModel';
 
 const ActionButton = ({ icon: Icon, label, onClick }) => (
   <Button 
@@ -17,8 +18,34 @@ const ActionButton = ({ icon: Icon, label, onClick }) => (
   </Button>
 );
 
-// Main Component
+const FactionManager = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [factionData, setFactionData] = useState(null);
+  const [isFirstTime, setIsFirstTime] = useState(true);
+
+  const OpenFactionDashboard = () => {
+    // If it's the first time, show setup modal
+    if (isFirstTime) {
+      setIsOpen(true);
+    } else if (factionData) {
+      // If faction already exists, just open dashboard
+      setIsOpen(true);
+    }
+  };
+
+  const handleSetupSubmit = (data) => {
+    setFactionData(data);
+    setIsFirstTime(false);
+    setIsOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
+
 const FactionDashboard = () => {
+  
     const [activeModal, setActiveModal] = useState(null);
   
     const [members] = useState([
@@ -74,12 +101,13 @@ const FactionDashboard = () => {
       <Card>
         <CardHeader>
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold flex items-center gap-2">
-              <Shield className="h-6 w-6" />
-              Los Santos Police Department
-            </h2>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-400">Members: {members.length}</span>
+          <h2 className="text-xl font-bold flex items-center gap-2">
+                <Shield className="h-6 w-6" />
+                {factionData?.orgName || 'Faction Dashboard'}
+                <span className="text-sm text-gray-400">({factionData?.orgType})</span>
+              </h2>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-400">Members: {members.length}</span>
               <img 
                 src={police_logo}
                 alt="Faction Logo"
@@ -164,4 +192,28 @@ const FactionDashboard = () => {
   );
 };
 
-export default FactionDashboard;
+return (
+  <>
+    {isFirstTime && isOpen && (
+      <InitialSetupModal 
+        onSubmit={handleSetupSubmit}
+        onClose={() => setIsOpen(false)}
+      />
+    )}
+    
+    {isOpen && !isFirstTime && factionData && (
+      <FactionDashboard />
+    )}
+    
+    {/* Example button to open dashboard */}
+    <Button 
+      onClick={OpenFactionDashboard}
+      className="fixed bottom-4 right-4 bg-black/90 text-white"
+    >
+      {isOpen ? 'Close Dashboard' : 'Open Dashboard'}
+    </Button>
+  </>
+);
+};
+
+export default FactionManager;
