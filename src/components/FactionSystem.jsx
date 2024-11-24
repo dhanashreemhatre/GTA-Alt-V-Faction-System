@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Shield, Users, DollarSign, Settings, LogOut, ChevronUp, ChevronDown, X } from 'lucide-react';
+import { Shield, Users, DollarSign, Settings, LogOut, ChevronUp, ChevronDown, X,CarFront } from 'lucide-react';
 import police_logo from './../assets/los-loice.jpeg'
 import { Card,CardHeader,CardContent } from './ui/card/Card';
 import Button from './ui/Button';
 import MemberRow from './app/MemberRow';
-import {EditSalaryForm,InvitePlayerForm,ManageDutyForm,PromoteDemoteForm,SetLeaderForm,SetLogoForm} from './ui/forms/forms'
+import {RankSalaryManager,InvitePlayerForm,ManageDutyForm,PromoteDemoteForm,SetLeaderForm,SetLogoForm} from './ui/forms/forms'
 import Modal from './ui/modal/Modal';
 import InitialSetupModal from './InitialSetupModel';
 
@@ -77,7 +77,7 @@ const FactionDashboard = () => {
         case 'promoteDemote':
           return <PromoteDemoteForm onClose={closeModal} members={members} />;
         case 'editSalary':
-          return <EditSalaryForm onClose={closeModal} members={members} />;
+          return <RankSalaryManager onClose={closeModal} members={members} />;
         default:
           return null;
       }
@@ -148,6 +148,11 @@ const FactionDashboard = () => {
               <ActionButton 
                 icon={Users} 
                 label="Set Leader" 
+                onClick={() => setActiveModal('setLeader')}
+              />
+               <ActionButton 
+                icon={CarFront} 
+                label="Add/Remove Vehicle" 
                 onClick={() => setActiveModal('setLeader')}
               />
               <ActionButton 

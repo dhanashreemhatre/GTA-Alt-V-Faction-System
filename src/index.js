@@ -4,6 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+if (window.alt === undefined) {
+  window.alt = {
+    emit: () => {},
+    on: () => {},
+    off:()=>{}
+  };
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
