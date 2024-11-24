@@ -9,6 +9,9 @@ import {
   Star,
   Activity,
   CarFront,
+  Info,
+  UserMinus,
+  Trash2,
 } from "lucide-react";
 import { Card, CardHeader, CardContent } from "./ui/card/Card";
 import Button from "./ui/Button";
@@ -68,8 +71,49 @@ const ActionButton = ({
   </button>
 );
 
+// New form components for the new features
+const KickMemberForm = ({ onClose, members }) => (
+  <div className="p-4">
+    <h2 className="text-xl font-bold mb-4 text-slate-200">Kick Member</h2>
+    <input
+      type="text"
+      placeholder="Enter member ID or username"
+      className="w-full p-2 mb-4 bg-gray-700 rounded"
+    />
+    <div className="flex justify-end gap-2">
+      <Button onClick={onClose} variant="secondary" className="bg-blue-900 hover:bg-blue-950 text-slate-200">Cancel</Button>
+      <Button onClick={onClose} variant="destructive" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-slate-200">Kick Member</Button>
+    </div>
+  </div>
+);
+
+const DeleteFactionConfirm = ({ onClose }) => (
+  <div className="p-4">
+    <h2 className="text-xl font-bold mb-4 text-slate-200">Delete Faction</h2>
+    <p className="text-red-400 mb-4">This action cannot be undone. All faction data will be permanently deleted.</p>
+    <div className="flex justify-end gap-2">
+      <Button onClick={onClose} variant="secondary" className="bg-blue-900 hover:bg-blue-950 text-slate-200">Cancel</Button>
+      <Button onClick={onClose} variant="destructive" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-slate-200">Delete Faction</Button>
+    </div>
+  </div>
+);
+
+const LeaveFactionConfirm = ({ onClose }) => (
+  <div className="p-4">
+    <h2 className="text-xl font-bold mb-4 text-slate-200">Leave Faction</h2>
+    <p className="text-gray-400 mb-4">Are you sure you want to leave this faction?</p>
+    <div className="flex justify-end gap-2">
+      <Button onClick={onClose} variant="secondary" className="bg-blue-900 hover:bg-blue-950 text-slate-200">Cancel</Button>
+      <Button onClick={onClose} variant="destructive" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-slate-200">Leave Faction</Button>
+    </div>
+  </div>
+);
+
+
 // Component: FactionManager
 const FactionManager = () => {
+  const [isAdmin, setIsAdmin] = useState(true); // Add this to toggle admin view
+  const [showSettings, setShowSettings] = useState(false);
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
   const [isFirstTime, setIsFirstTime] = useState(true);
   const [factionData, setFactionData] = useState({
@@ -137,10 +181,115 @@ const FactionManager = () => {
         return <RankSalaryManager onClose={closeModal} members={members} />;
       case "managevehicle":
         return <ManageVehicleForm onClose={closeModal} />
-      default:
-        return null;
+        case "kickMember":
+          return <KickMemberForm onClose={closeModal} members={members} />;
+        case "deleteFaction":
+          return <DeleteFactionConfirm onClose={closeModal} />;
+        case "leaveFaction":
+          return <LeaveFactionConfirm onClose={closeModal} />;
+        default:
+          return null;
     }
   };
+
+  const BasicActions = () => (
+    <>
+      <ActionButton
+        icon={Info}
+        label="Faction Info"
+        color="bg-blue-600 hover:bg-blue-700"
+        onClick={() => {/* Handle faction info */}}
+      />
+      <ActionButton
+        icon={CarFront}
+        label="Faction Vehicles"
+        color="bg-blue-700 hover:bg-blue-800"
+        onClick={() => setActiveModal('managevehicle')}
+      />
+      <ActionButton
+        icon={Activity}
+        label="Dashboard"
+        color="bg-blue-800 hover:bg-blue-900"
+        onClick={() => {/* Handle dashboard */}}
+      />
+      <ActionButton
+        icon={LogOut}
+        label="Leave Faction"
+        color="bg-red-600 hover:bg-red-700"
+        onClick={() => setActiveModal('leaveFaction')}
+      />
+    </>
+  );
+
+  // Admin actions in settings menu
+  const AdminActions = () => (
+    <div className="space-y-3 bg-gray-800 p-4 rounded-lg">
+      <h3 className="text-lg font-semibold mb-4">Admin Settings</h3>
+      <ActionButton
+        icon={Shield}
+        label="Set Leader"
+        color="bg-blue-600 hover:bg-blue-700"
+        onClick={() => setActiveModal('setLeader')}
+      />
+      <ActionButton
+        icon={Users}
+        label="Invite Member"
+        color="bg-blue-800 hover:bg-blue-900"
+        onClick={() => setActiveModal('invite')}
+      />
+     
+      <ActionButton 
+        icon={Shield} 
+        label="Set Logo" 
+        color="bg-blue-800 hover:bg-blue-900"
+        onClick={() => setActiveModal('setLogo')}
+      />
+      <ActionButton
+        icon={Settings}
+        label="Manage Ranks"
+        color="bg-blue-900 hover:bg-blue-950"
+        onClick={() => setActiveModal('promoteDemote')}
+      />
+      <ActionButton
+        icon={DollarSign}
+        label="Treasury"
+        color="bg-indigo-600 hover:bg-indigo-700"
+        onClick={() => setActiveModal('editSalary')}
+      />
+       <ActionButton
+        icon={UserMinus}
+        label="Kick Member"
+        color="bg-red-600 hover:bg-red-700"
+        onClick={() => setActiveModal('kickMember')}
+      />
+      <ActionButton
+        icon={Trash2}
+        label="Delete Faction"
+        color="bg-red-800 hover:bg-red-900"
+        onClick={() => setActiveModal('deleteFaction')}
+      />
+    </div>
+  );
+
+  const ActionSidebar = () => (
+    <div className="space-y-3">
+  {isAdmin && showSettings ? (
+    <AdminActions />
+  ) : (
+    <>
+      <BasicActions />
+      {isAdmin && (
+        <ActionButton
+          icon={Settings}
+          label="Admin Settings"
+          color="bg-gray-700 hover:bg-gray-800"
+          onClick={() => setShowSettings(!showSettings)}
+        />
+      )}
+    </>
+  )}
+</div>
+  );
 
   // Faction Dashboard Content
   const FactionDashboard = () => (
@@ -260,49 +409,7 @@ const FactionManager = () => {
 
           {/* Action Sidebar */}
           <div className="space-y-3">
-            <ActionButton
-              icon={Shield}
-              label="Set Leader"
-              color="bg-blue-600 hover:bg-blue-700"
-              onClick={() => setActiveModal('setLeader')}
-            />
-            <ActionButton
-              icon={CarFront}
-              label="Manage Vehicles"
-              color="bg-blue-700 hover:bg-blue-800"
-              onClick={() => setActiveModal('managevehicle')}
-              
-            />
-            <ActionButton
-              icon={Users}
-              label="Invite Member"
-              color="bg-blue-800 hover:bg-blue-900"
-              onClick={() => setActiveModal('invite')}
-            />
-             <ActionButton 
-                icon={Shield} 
-                label="Set Logo" 
-                color="bg-blue-800 hover:bg-blue-900"
-                onClick={() => setActiveModal('setLogo')}
-              />
-            <ActionButton
-              icon={Settings}
-              label="Manage Ranks"
-              color="bg-blue-900 hover:bg-blue-950"
-              onClick={() => setActiveModal('promoteDemote')}
-            />
-            <ActionButton
-              icon={DollarSign}
-              label="Treasury"
-              color="bg-indigo-600 hover:bg-indigo-700"
-              onClick={() => setActiveModal('editSalary')}
-            />
-            <ActionButton
-              icon={LogOut}
-              label="Exit"
-              color="bg-gray-800 hover:bg-gray-900"
-              onClick={closeModal}
-            />
+           <ActionSidebar/>
           </div>
         </div>
 
