@@ -59,12 +59,14 @@ const PromoteDemoteForm = ({ onClose, members }) => {
             variant="destructive" 
             onClick={onClose} 
             type="button"
+            className="bg-blue-900 hover:bg-blue-950"
           >
             Cancel
           </Button>
           <Button 
             variant="default"
             type="submit"
+            className="bg-blue-600 hover:bg-blue-700"
           >
             Update Rank
           </Button>

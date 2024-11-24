@@ -22,6 +22,7 @@ import {
   PromoteDemoteForm,
   SetLeaderForm,
   SetLogoForm,
+  ManageVehicleForm,
 } from "./ui/forms/forms";
 
 // Component: Status Indicator
@@ -134,6 +135,8 @@ const FactionManager = () => {
         return <PromoteDemoteForm onClose={closeModal} members={members} />;
       case "editSalary":
         return <RankSalaryManager onClose={closeModal} members={members} />;
+      case "managevehicle":
+        return <ManageVehicleForm onClose={closeModal} />
       default:
         return null;
     }
@@ -141,8 +144,8 @@ const FactionManager = () => {
 
   // Faction Dashboard Content
   const FactionDashboard = () => (
-    <div className="h-[80vh] overflow-y-auto bg-gray-900 text-white p-6">
-      <div className="w-[90vw] mx-auto space-y-6">
+    <div className="h-[80vh] w-[90vw] mx-auto my-10 overflow-y-auto bg-gray-900 text-white p-6">
+      <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
@@ -267,7 +270,7 @@ const FactionManager = () => {
               icon={CarFront}
               label="Manage Vehicles"
               color="bg-blue-700 hover:bg-blue-800"
-              onClick={() => setActiveModal('setLeader')}
+              onClick={() => setActiveModal('managevehicle')}
               
             />
             <ActionButton

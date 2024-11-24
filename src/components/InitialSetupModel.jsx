@@ -14,7 +14,7 @@ const InitialSetupModal = ({ onSubmit, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 text-white flex items-center justify-center">
+    <div className="fixed inset-0 text-white flex items-center justify-center">
       <Card className="w-96">
         <CardHeader>
           <h2 className="text-xl font-bold">Create New Faction</h2>

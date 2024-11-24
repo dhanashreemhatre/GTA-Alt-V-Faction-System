@@ -27,8 +27,8 @@ const SetLogoForm = ({ onClose }) => {
           />
         </div>
         <div className="flex justify-end gap-2">
-          <Button onClick={onClose} variant="danger">Cancel</Button>
-          <Button type="submit" variant="primary">Set Logo</Button>
+          <Button onClick={onClose} variant="danger" className="bg-blue-900 hover:bg-blue-950">Cancel</Button>
+          <Button type="submit" variant="primary" className="bg-blue-600 hover:bg-blue-700">Set Logo</Button>
         </div>
       </form>
     );
