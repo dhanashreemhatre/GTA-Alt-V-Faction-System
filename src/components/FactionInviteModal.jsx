@@ -28,7 +28,7 @@ const FactionInviteModal = () => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center">
+    <div id='factioninvitationmodel' className="fixed inset-0 flex items-center justify-center">
       <div className="bg-black/80 border border-red-900/50 rounded-md shadow-lg w-96">
         <div className="p-6">
           {/* Title */}

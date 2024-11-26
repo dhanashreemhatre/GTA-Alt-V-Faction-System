@@ -202,7 +202,7 @@ const FactionSystem = ({
     </div>
   );
   return (
-    <div className="h-[80vh] w-[90vw] mx-auto my-10 overflow-y-auto bg-gray-900 text-white p-6">
+    <div id='factionsystem' className="h-[80vh] w-[90vw] mx-auto my-10 overflow-y-auto bg-gray-900 text-white p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex justify-between items-center">
