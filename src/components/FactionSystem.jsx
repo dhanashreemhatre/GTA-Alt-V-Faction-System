@@ -1,169 +1,70 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
-  Shield,
-  Users,
-  DollarSign,
-  Settings,
-  LogOut,
-  Bell,
-  Star,
-  Activity,
-  CarFront,
-  Info,
-  UserMinus,
-  Trash2,
+  Shield, Users, DollarSign, Settings, LogOut, Bell, Star, Activity, 
+  CarFront, Info, UserMinus, Trash2
 } from "lucide-react";
 import { Card, CardHeader, CardContent } from "./ui/card/Card";
-import Button from "./ui/Button";
+import ActionButton from "./ui/button/ActionButton";
+import StatCard from "./ui/card/StatCard";
+import StatusIndicator from "./ui/card/StatusIndicator";
 import Modal from "./ui/modal/Modal";
-import InitialSetupModal from "./InitialSetupModel";
 import { Alert } from "./ui/Alert";
 import {
-  RankSalaryManager,
-  InvitePlayerForm,
-  ManageDutyForm,
-  PromoteDemoteForm,
-  SetLeaderForm,
-  SetLogoForm,
-  ManageVehicleForm,
+  RankSalaryManager, InvitePlayerForm, ManageDutyForm, 
+  PromoteDemoteForm, SetLeaderForm, SetLogoForm, 
+  ManageVehicleForm, DeleteFactionConfirm, 
+  LeaveFactionConfirm, KickMemberForm
 } from "./ui/forms/forms";
 
-// Component: Status Indicator
-const StatusIndicator = ({ status }) => (
-  <div className="flex items-center gap-2">
-    <div
-      className={`h-2 w-2 rounded-full ${
-        status === "Online" ? "bg-green-500" : "bg-gray-500"
-      } animate-pulse`}
-    />
-    <span className={status === "Online" ? "text-green-500" : "text-gray-500"}>
-      {status}
-    </span>
-  </div>
-);
-
-// Component: StatCard
-const StatCard = ({ icon: Icon, label, value, color }) => (
-  <div className={`${color} rounded-lg p-4 shadow-lg`}>
-    <div className="flex items-center justify-between">
-      <div>
-        <p className="text-sm text-gray-200 opacity-80">{label}</p>
-        <p className="text-2xl font-bold text-white mt-1">{value}</p>
-      </div>
-      <Icon className="h-8 w-8 text-white opacity-75" />
-    </div>
-  </div>
-);
-
-// Component: ActionButton
-const ActionButton = ({
-  icon: Icon,
-  label,
-  onClick,
-  color = "bg-gray-800",
-}) => (
-  <button
-    onClick={onClick}
-    className={`${color} w-full flex items-center gap-3 text-gray-200 hover:brightness-110 px-4 py-3 rounded-lg transition-all duration-200 shadow-md`}
-  >
-    <Icon className="h-5 w-5" />
-    <span className="font-medium">{label}</span>
-  </button>
-);
-
-// New form components for the new features
-const KickMemberForm = ({ onClose, members }) => (
-  <div className="p-4">
-    <h2 className="text-xl font-bold mb-4 text-slate-200">Kick Member</h2>
-    <input
-      type="text"
-      placeholder="Enter member ID or username"
-      className="w-full p-2 mb-4 bg-gray-700 rounded"
-    />
-    <div className="flex justify-end gap-2">
-      <Button onClick={onClose} variant="secondary" className="bg-blue-900 hover:bg-blue-950 text-slate-200">Cancel</Button>
-      <Button onClick={onClose} variant="destructive" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-slate-200">Kick Member</Button>
-    </div>
-  </div>
-);
-
-const DeleteFactionConfirm = ({ onClose }) => (
-  <div className="p-4">
-    <h2 className="text-xl font-bold mb-4 text-slate-200">Delete Faction</h2>
-    <p className="text-red-400 mb-4">This action cannot be undone. All faction data will be permanently deleted.</p>
-    <div className="flex justify-end gap-2">
-      <Button onClick={onClose} variant="secondary" className="bg-blue-900 hover:bg-blue-950 text-slate-200">Cancel</Button>
-      <Button onClick={onClose} variant="destructive" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-slate-200">Delete Faction</Button>
-    </div>
-  </div>
-);
-
-const LeaveFactionConfirm = ({ onClose }) => (
-  <div className="p-4">
-    <h2 className="text-xl font-bold mb-4 text-slate-200">Leave Faction</h2>
-    <p className="text-gray-400 mb-4">Are you sure you want to leave this faction?</p>
-    <div className="flex justify-end gap-2">
-      <Button onClick={onClose} variant="secondary" className="bg-blue-900 hover:bg-blue-950 text-slate-200">Cancel</Button>
-      <Button onClick={onClose} variant="destructive" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-slate-200">Leave Faction</Button>
-    </div>
-  </div>
-);
-
-
-// Component: FactionManager
-const FactionManager = () => {
-  const [isAdmin, setIsAdmin] = useState(true); // Add this to toggle admin view
-  const [showSettings, setShowSettings] = useState(false);
-  const [isDashboardOpen, setIsDashboardOpen] = useState(false);
-  const [isFirstTime, setIsFirstTime] = useState(true);
-  const [factionData, setFactionData] = useState({
-    orgName: "Los Santos Police Department",
-    orgType: "Law Enforcement",
-    funds: 2500000,
-    activeMembers: 12,
-    totalMembers: 25,
+const FactionSystem = ({   
+  initialFactionData, 
+  isAdmin = false, 
+  adminPrivileges = {
+    setLeader: true,
+    inviteMember: true,
+    setLogo: true,
+    manageRanks: true,
+    manageTreasury: true,
+    kickMember: true,
+    deleteFaction: true} }) => {
+  const [factionData, setFactionData] = useState(initialFactionData || {
+    orgName: "Unnamed Faction",
+    orgType: "Unspecified",
+    funds: 0,
+    activeMembers: 0,
+    totalMembers: 0
   });
 
   const [activeModal, setActiveModal] = useState(null);
-  const [members] = useState([
-    {
-      name: "Xan Jing",
-      rank: "Chief of Police",
-      status: "Online",
-      lastSeen: "Now",
-      leader: true,
-      salary: 2000,
-      duty: true,
-    },
-    {
-      name: "Mike Carter",
-      rank: "Lieutenant",
-      status: "Online",
-      lastSeen: "Now",
-      leader: false,
-      salary: 1500,
-      duty: true,
-    },
-    {
-      name: "Sarah Rodriguez",
-      rank: "Sergeant",
-      status: "Offline",
-      lastSeen: "2 hours ago",
-      leader: false,
-      salary: 1200,
-      duty: false,
-    },
-  ]);
-
-  // Handlers
-  const handleSetupSubmit = (data) => {
-    setFactionData(data);
-    setIsFirstTime(false);
-    setIsDashboardOpen(true);
-  };
+  const [members, setMembers] = useState([ {
+    name: "Xan Jing",
+    rank: "Chief of Police",
+    status: "Online",
+    lastSeen: "Now",
+    leader: true,
+    salary: 2000,
+    duty: true,
+  },
+  {
+    name: "Mike Carter",
+    rank: "Lieutenant",
+    status: "Online",
+    lastSeen: "Now",
+    leader: false,
+    salary: 1500,
+    duty: true,
+  },
+  {
+    name: "Sarah Rodriguez",
+    rank: "Sergeant",
+    status: "Offline",
+    lastSeen: "2 hours ago",
+    leader: false,
+    salary: 1200,
+    duty: false,
+  },]);
 
   const closeModal = () => setActiveModal(null);
-  const toggleDashboard = () => setIsDashboardOpen(!isDashboardOpen);
 
   const getModalContent = () => {
     switch (activeModal) {
@@ -180,15 +81,15 @@ const FactionManager = () => {
       case "editSalary":
         return <RankSalaryManager onClose={closeModal} members={members} />;
       case "managevehicle":
-        return <ManageVehicleForm onClose={closeModal} />
-        case "kickMember":
-          return <KickMemberForm onClose={closeModal} members={members} />;
-        case "deleteFaction":
-          return <DeleteFactionConfirm onClose={closeModal} />;
-        case "leaveFaction":
-          return <LeaveFactionConfirm onClose={closeModal} />;
-        default:
-          return null;
+        return <ManageVehicleForm onClose={closeModal} />;
+      case "kickMember":
+        return <KickMemberForm onClose={closeModal} members={members} />;
+      case "deleteFaction":
+        return <DeleteFactionConfirm onClose={closeModal} />;
+      case "leaveFaction":
+        return <LeaveFactionConfirm onClose={closeModal} />;
+      default:
+        return null;
     }
   };
 
@@ -221,78 +122,86 @@ const FactionManager = () => {
     </>
   );
 
-  // Admin actions in settings menu
   const AdminActions = () => (
     <div className="space-y-3 bg-gray-800 p-4 rounded-lg">
       <h3 className="text-lg font-semibold mb-4">Admin Settings</h3>
-      <ActionButton
-        icon={Shield}
-        label="Set Leader"
-        color="bg-blue-600 hover:bg-blue-700"
-        onClick={() => setActiveModal('setLeader')}
-      />
-      <ActionButton
-        icon={Users}
-        label="Invite Member"
-        color="bg-blue-800 hover:bg-blue-900"
-        onClick={() => setActiveModal('invite')}
-      />
-     
-      <ActionButton 
-        icon={Shield} 
-        label="Set Logo" 
-        color="bg-blue-800 hover:bg-blue-900"
-        onClick={() => setActiveModal('setLogo')}
-      />
-      <ActionButton
-        icon={Settings}
-        label="Manage Ranks"
-        color="bg-blue-900 hover:bg-blue-950"
-        onClick={() => setActiveModal('promoteDemote')}
-      />
-      <ActionButton
-        icon={DollarSign}
-        label="Treasury"
-        color="bg-indigo-600 hover:bg-indigo-700"
-        onClick={() => setActiveModal('editSalary')}
-      />
+      {adminPrivileges.setLeader && (
+        <ActionButton
+          icon={Shield}
+          label="Set Leader"
+          color="bg-blue-600 hover:bg-blue-700"
+          onClick={() => setActiveModal('setLeader')}
+        />
+      )}
+      {adminPrivileges.inviteMember && (
+        <ActionButton
+          icon={Users}
+          label="Invite Member"
+          color="bg-blue-800 hover:bg-blue-900"
+          onClick={() => setActiveModal('invite')}
+        />
+      )}
+      {adminPrivileges.setLogo && (
+        <ActionButton 
+          icon={Shield} 
+          label="Set Logo" 
+          color="bg-blue-800 hover:bg-blue-900"
+          onClick={() => setActiveModal('setLogo')}
+        />
+      )}
        <ActionButton
-        icon={UserMinus}
-        label="Kick Member"
-        color="bg-red-600 hover:bg-red-700"
-        onClick={() => setActiveModal('kickMember')}
+        icon={CarFront}
+        label="Faction Vehicles"
+        color="bg-blue-700 hover:bg-blue-800"
+        onClick={() => setActiveModal('managevehicle')}
       />
-      <ActionButton
-        icon={Trash2}
-        label="Delete Faction"
-        color="bg-red-800 hover:bg-red-900"
-        onClick={() => setActiveModal('deleteFaction')}
-      />
+      {adminPrivileges.manageRanks && (
+        <ActionButton
+          icon={Settings}
+          label="Manage Ranks"
+          color="bg-blue-900 hover:bg-blue-950"
+          onClick={() => setActiveModal('promoteDemote')}
+        />
+      )}
+      {adminPrivileges.manageTreasury && (
+        <ActionButton
+          icon={DollarSign}
+          label="Treasury"
+          color="bg-indigo-600 hover:bg-indigo-700"
+          onClick={() => setActiveModal('editSalary')}
+        />
+      )}
+      {adminPrivileges.kickMember && (
+        <ActionButton
+          icon={UserMinus}
+          label="Kick Member"
+          color="bg-red-600 hover:bg-red-700"
+          onClick={() => setActiveModal('kickMember')}
+        />
+      )}
+      {adminPrivileges.deleteFaction && (
+        <ActionButton
+          icon={Trash2}
+          label="Delete Faction"
+          color="bg-red-800 hover:bg-red-900"
+          onClick={() => setActiveModal('deleteFaction')}
+        />
+      )}
     </div>
   );
 
   const ActionSidebar = () => (
     <div className="space-y-3">
-  {isAdmin && showSettings ? (
-    <AdminActions />
-  ) : (
-    <>
-      <BasicActions />
-      {isAdmin && (
-        <ActionButton
-          icon={Settings}
-          label="Admin Settings"
-          color="bg-gray-700 hover:bg-gray-800"
-          onClick={() => setShowSettings(!showSettings)}
-        />
+      {isAdmin ? (
+        <AdminActions />
+      ) : (
+        <>
+          <BasicActions />
+        </>
       )}
-    </>
-  )}
-</div>
+    </div>
   );
-
-  // Faction Dashboard Content
-  const FactionDashboard = () => (
+  return (
     <div className="h-[80vh] w-[90vw] mx-auto my-10 overflow-y-auto bg-gray-900 text-white p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
@@ -333,9 +242,9 @@ const FactionManager = () => {
           <StatCard
             icon={Activity}
             label="Duty Status"
-            value={`${Math.round(
+            value={`${members.length > 0 ? Math.round(
               (members.filter((m) => m.duty).length / members.length) * 100
-            )}%`}
+            ) : 0}%`}
             color="bg-gradient-to-br from-blue-700 to-blue-900"
           />
           <StatCard
@@ -364,7 +273,7 @@ const FactionManager = () => {
                         <th className="py-3 px-4 text-left">Status</th>
                         <th className="py-3 px-4 text-left">Last Seen</th>
                         <th className="py-3 px-4 text-left">Salary</th>
-                        <th className="py-3 px-4 text-left">Actions</th>
+                       {isAdmin &&  <th className="py-3 px-4 text-left">Actions</th>}
                       </tr>
                     </thead>
                     <tbody>
@@ -393,11 +302,11 @@ const FactionManager = () => {
                             {member.lastSeen}
                           </td>
                           <td className="py-3 px-4">${member.salary}</td>
-                          <td className="py-3 px-4">
+                          {isAdmin && <td className="py-3 px-4">
                             <button className="text-blue-400 hover:text-blue-300">
                               Manage
                             </button>
-                          </td>
+                          </td>}
                         </tr>
                       ))}
                     </tbody>
@@ -409,7 +318,7 @@ const FactionManager = () => {
 
           {/* Action Sidebar */}
           <div className="space-y-3">
-           <ActionSidebar/>
+            <ActionSidebar />
           </div>
         </div>
 
@@ -421,30 +330,19 @@ const FactionManager = () => {
           <CardContent>
             <Alert className="bg-blue-900/30 border-blue-700">
               <Activity className="h-4 w-4" />
-              <span className="ml-2">Mike Carter promoted to Lieutenant</span>
-              <span className="ml-auto text-sm text-gray-400">2 hours ago</span>
+              <span className="ml-2">No recent activity</span>
+              <span className="ml-auto text-sm text-gray-400">-</span>
             </Alert>
           </CardContent>
         </Card>
       </div>
-    </div>
-  );
 
-  return (
-    <>
-      {isFirstTime && (
-        <InitialSetupModal
-          onSubmit={handleSetupSubmit}
-          onClose={toggleDashboard}
-        />
-      )}
-
-      {isDashboardOpen && <FactionDashboard />}
+      {/* Modal for various actions */}
       <Modal isOpen={!!activeModal} onClose={closeModal}>
         {getModalContent()}
       </Modal>
-    </>
+    </div>
   );
 };
 
-export default FactionManager;
+export default FactionSystem;

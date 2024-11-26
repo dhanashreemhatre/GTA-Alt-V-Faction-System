@@ -30,3 +30,20 @@
     scrollbar-width: thin;
     scrollbar-color: #4a4e69 #16213e;
 }
+#initialSetupModel{
+    display: none;
+    
+}
+#initialSetupModel.active{
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}

@@ -1,4 +1,4 @@
-import Button from "../Button";
+import Button from "../button/Button";
 import { useState } from 'react';
 import { Plus, Trash2, Save } from 'lucide-react';
 import { Card,CardHeader,CardContent } from "../card/Card";

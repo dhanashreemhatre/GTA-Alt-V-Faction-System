@@ -5,5 +5,8 @@ import PromoteDemoteForm from './PromoteDemoteForm'
 import SetLeaderForm from './SetLeaderForm'
 import SetLogoForm from './SetLogoForm'
 import ManageVehicleForm from './ManageVehicle'
+import DeleteFactionConfirm from './DeleteFactionConfirm'
+import LeaveFactionConfirm from './LeaveFactionConfirm'
+import KickMemberForm from './KickMemberForm'
 
-export {RankSalaryManager,InvitePlayerForm,ManageDutyForm,PromoteDemoteForm,SetLeaderForm,SetLogoForm, ManageVehicleForm};
+export {RankSalaryManager,InvitePlayerForm,ManageDutyForm,PromoteDemoteForm,SetLeaderForm,SetLogoForm, ManageVehicleForm,KickMemberForm,LeaveFactionConfirm,DeleteFactionConfirm};

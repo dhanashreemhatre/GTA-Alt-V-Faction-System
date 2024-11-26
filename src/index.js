@@ -12,6 +12,18 @@ if (window.alt === undefined) {
   };
 }
 
+const openFactionInvitationModal = () => {
+  const setupModel = document.getElementById('initialSetupModel');
+  if (setupModel) {
+    setupModel.classList.add('active'); // Adds the 'active' class to the element
+  } else {
+    console.error('Element with ID "initialSetupModel" not found.');
+  }
+};
+
+window.openFactionInvitationModal = openFactionInvitationModal;
+
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

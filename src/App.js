@@ -1,7 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
-import FactionManager from './components/FactionSystem';
 import FactionInviteModal from './components/FactionInviteModal';
+import FactionSystem from './components/FactionSystem';
+import InitialSetupModal from './components/InitialSetupModel';
 
 const openFactionInvitationModal=()=>{
 
@@ -11,8 +12,9 @@ function App() {
   
   return (
   <>
-  <FactionManager />
+ <FactionSystem/>
   <FactionInviteModal/>
+  <InitialSetupModal/>
   </>
   );
 }

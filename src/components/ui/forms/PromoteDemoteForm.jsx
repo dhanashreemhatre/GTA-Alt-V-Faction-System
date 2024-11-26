@@ -1,4 +1,4 @@
-import Button from "../Button";
+import Button from "../button/Button";
 import { useState } from "react";
 import { RANKS } from "../../constants/rank";
 import { Card } from "../card/Card";
