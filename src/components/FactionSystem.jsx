@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import {
   Shield, Users, DollarSign, Settings, LogOut, Bell, Star, Activity, 
   CarFront, Info, UserMinus, Trash2
@@ -63,7 +63,13 @@ const FactionSystem = ({
     salary: 1200,
     duty: false,
   },]);
+  const recentActivityRef = useRef(null);
 
+  const scrollToDashboard = () => {
+    if (recentActivityRef.current) {
+      recentActivityRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   const closeModal = () => setActiveModal(null);
 
   const getModalContent = () => {
@@ -81,7 +87,7 @@ const FactionSystem = ({
       case "editSalary":
         return <RankSalaryManager onClose={closeModal} members={members} />;
       case "managevehicle":
-        return <ManageVehicleForm onClose={closeModal} />;
+        return <ManageVehicleForm onClose={closeModal} isAdmin={isAdmin} />;
       case "kickMember":
         return <KickMemberForm onClose={closeModal} members={members} />;
       case "deleteFaction":
@@ -111,7 +117,7 @@ const FactionSystem = ({
         icon={Activity}
         label="Dashboard"
         color="bg-blue-800 hover:bg-blue-900"
-        onClick={() => {/* Handle dashboard */}}
+        onClick={scrollToDashboard}
       />
       <ActionButton
         icon={LogOut}
@@ -216,7 +222,7 @@ const FactionSystem = ({
             </div>
           </div>
           <div className="flex gap-4">
-            <button className="bg-gray-800 p-2 rounded-lg hover:bg-gray-700">
+            <button className="bg-gray-800 p-2 rounded-lg hover:bg-gray-700" onClick={scrollToDashboard}>
               <Bell className="h-5 w-5" />
             </button>
             <button className="bg-gray-800 p-2 rounded-lg hover:bg-gray-700">
@@ -323,6 +329,7 @@ const FactionSystem = ({
         </div>
 
         {/* Recent Activity */}
+        <div ref={recentActivityRef}>
         <Card className="bg-gray-800 border-gray-700">
           <CardHeader>
             <h2 className="text-xl font-semibold">Recent Activity</h2>
@@ -335,6 +342,7 @@ const FactionSystem = ({
             </Alert>
           </CardContent>
         </Card>
+        </div>
       </div>
 
       {/* Modal for various actions */}

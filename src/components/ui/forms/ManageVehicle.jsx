@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "../button/Button";
 import { Car, Truck, Shield, X, Plus, Archive } from "lucide-react";
 
-const VehicleManagementForm = ({ onClose }) => {
+const VehicleManagementForm = ({ onClose,isAdmin }) => {
   const [logoUrl, setLogoUrl] = useState("");
   const [vehicles, setVehicles] = useState([]);
   const [newVehicle, setNewVehicle] = useState({
@@ -52,8 +52,8 @@ const VehicleManagementForm = ({ onClose }) => {
           </div>
         </div>
       </div>
-
-      {/* Add Vehicle Section */}
+         {/* Add Vehicle Section */}
+      { isAdmin &&
       <div className="bg-gradient-to-br from-blue-700 to-blue-900 p-6 rounded-lg shadow-lg">
         <h3 className="text-lg font-bold text-white mb-4 flex items-center">
           <Truck className="w-5 h-5 mr-2" />
@@ -91,6 +91,7 @@ const VehicleManagementForm = ({ onClose }) => {
           Add Vehicle
         </Button>
       </div>
+      }
 
       {/* Vehicle List */}
       <div className="bg-gradient-to-br from-blue-800 to-blue-950 p-6 rounded-lg shadow-lg">
@@ -133,7 +134,7 @@ const VehicleManagementForm = ({ onClose }) => {
       </div>
 
       {/* Form Actions */}
-      <div className="flex justify-end gap-4 pt-4">
+     {isAdmin && <div className="flex justify-end gap-4 pt-4">
         <Button 
           onClick={onClose} 
           variant="danger" 
@@ -148,7 +149,7 @@ const VehicleManagementForm = ({ onClose }) => {
         >
           Save Changes
         </Button>
-      </div>
+      </div>}
     </div>
   );
 };

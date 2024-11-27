@@ -12,38 +12,6 @@ if (window.alt === undefined) {
   };
 }
 
-const openFactionSetupModal = () => {
-  const setupModel = document.getElementById('initialSetupModel');
-  if (setupModel) {
-    setupModel.classList.add('active'); // Adds the 'active' class to the element
-  } else {
-    console.error('Element with ID "initialSetupModel" not found.');
-  }
-};
-
-window.openFactionSetupModal = openFactionSetupModal;
-
-const openFactionInvitationModal = () => {
-  const setupModel = document.getElementById('factioninvitationmodel');
-  if (setupModel) {
-    setupModel.classList.add('active'); // Adds the 'active' class to the element
-  } else {
-    console.error('Element with ID "initialSetupModel" not found.');
-  }
-};
-
-window.openFactionInvitationModal = openFactionInvitationModal;
-
-const openFactionSystemModel = () => {
-  const setupModel = document.getElementById('factionsystem');
-  if (setupModel) {
-    setupModel.classList.add('active'); // Adds the 'active' class to the element
-  } else {
-    console.error('Element with ID "initialSetupModel" not found.');
-  }
-};
-
-window.openFactionSystemModel = openFactionSystemModel;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

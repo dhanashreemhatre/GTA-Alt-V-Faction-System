@@ -88,9 +88,9 @@ const InitialSetupModal = () => {
                           focus:border-transparent"
               >
                 <option value="" disabled>Select organization type</option>
-                <option value="government">Government</option>
-                <option value="gang">Gang</option>
-                <option value="private">Private</option>
+                <option value="news">News (16000$)</option>
+                <option value="gang">Gang (6500$)</option>
+                <option value="legal">Legal (12000$)</option>
               </select>
             </div>
             

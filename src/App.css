@@ -72,3 +72,17 @@
 #factionsystem.active{
     display: block;
 } */
+
+
+
+  .close {
+    color: white;
+    position: absolute;
+    top: 6%;
+    right: 8%;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
