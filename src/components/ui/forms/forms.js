@@ -8,5 +8,6 @@ import ManageVehicleForm from './ManageVehicle'
 import DeleteFactionConfirm from './DeleteFactionConfirm'
 import LeaveFactionConfirm from './LeaveFactionConfirm'
 import KickMemberForm from './KickMemberForm'
-
-export {RankSalaryManager,InvitePlayerForm,ManageDutyForm,PromoteDemoteForm,SetLeaderForm,SetLogoForm, ManageVehicleForm,KickMemberForm,LeaveFactionConfirm,DeleteFactionConfirm};
+import FactionInfoModal from './factionInfoModel'
+import { VaultManagementForm,VaultManagementButton } from './vaultForm'
+export {FactionInfoModal,RankSalaryManager,InvitePlayerForm,ManageDutyForm,PromoteDemoteForm,SetLeaderForm,SetLogoForm, ManageVehicleForm,KickMemberForm,LeaveFactionConfirm,DeleteFactionConfirm,VaultManagementForm,VaultManagementButton};

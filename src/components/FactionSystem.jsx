@@ -13,7 +13,7 @@ import {
   RankSalaryManager, InvitePlayerForm, ManageDutyForm, 
   PromoteDemoteForm, SetLeaderForm, SetLogoForm, 
   ManageVehicleForm, DeleteFactionConfirm, 
-  LeaveFactionConfirm, KickMemberForm
+  LeaveFactionConfirm, KickMemberForm,FactionInfoModal,VaultManagementButton
 } from "./ui/forms/forms";
 
 const FactionSystem = ({   
@@ -94,6 +94,8 @@ const FactionSystem = ({
         return <DeleteFactionConfirm onClose={closeModal} />;
       case "leaveFaction":
         return <LeaveFactionConfirm onClose={closeModal} />;
+      case "factioninfomodel":
+        return <FactionInfoModal  onClose={closeModal} factionData={factionData} />
       default:
         return null;
     }
@@ -105,7 +107,7 @@ const FactionSystem = ({
         icon={Info}
         label="Faction Info"
         color="bg-blue-600 hover:bg-blue-700"
-        onClick={() => {/* Handle faction info */}}
+        onClick={() => setActiveModal('factioninfomodel')}
       />
       <ActionButton
         icon={CarFront}
@@ -160,6 +162,14 @@ const FactionSystem = ({
         label="Faction Vehicles"
         color="bg-blue-700 hover:bg-blue-800"
         onClick={() => setActiveModal('managevehicle')}
+      />
+       <VaultManagementButton 
+        currentFunds={factionData.funds}
+        onUpdateFunds={(newFunds) => setFactionData(prev => ({
+          ...prev, 
+          funds: newFunds
+        }))}
+        isAdmin={isAdmin}
       />
       {adminPrivileges.manageRanks && (
         <ActionButton
